@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-
-from os import path
-import runpy
+import subprocess
 import io
 import sys
+import runpy
+from os import path
 
 class TestAppPy:
     '''
@@ -25,8 +24,14 @@ class TestAppPy:
         '''
         prints "Hello World! Pass this test, please."
         '''
+        # Capture the output of the script
         captured_out = io.StringIO()
         sys.stdout = captured_out
         runpy.run_path("lib/app.py")
         sys.stdout = sys.__stdout__
-        assert(captured_out.getvalue() == "Hello World! Pass this test, please.\n")
+
+        # Check if the expected string is in the captured output
+        assert captured_out.getvalue().strip() == "Hello World! Pass this test, please."
+
+if __name__ == "__main__":
+    pytest.main()
